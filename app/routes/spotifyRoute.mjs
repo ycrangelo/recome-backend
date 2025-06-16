@@ -46,7 +46,7 @@ router.get('/callback', async (req, res) => {
       data: querystring.stringify({
         grant_type: 'authorization_code',
         code: code,
-        redirect_uri: REDIRECT_URI,
+        redirect_uri: REDIRECT_URI,  // ← Correct parameter name
         client_id: SPOTIFY_CLIENT_ID,
         client_secret: SPOTIFY_CLIENT_SECRET
       }),
