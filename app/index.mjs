@@ -7,6 +7,8 @@ import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 
+import spotifyRoute from './routes/spotifyRoute.mjs'
+
 dotenv.config();
 const app = express();
 
@@ -97,6 +99,8 @@ app.get('/get-presigned-url', async (req, res) => {
 //     res.status(500).json({ error: err.message });
 //   }
 // });
+
+app.use('/api/spotify', spotifyRoute);
 
 // Start server
 const PORT = 3000;
