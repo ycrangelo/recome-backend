@@ -108,9 +108,9 @@ router.get('/refresh_token', async (req, res) => {
 
 
 // Create Playlist Route
-//
+// just creating a 
 router.post('/create-playlist', async (req, res) => {
-  const { access_token, user_id, name, description, isPublic } = req.body;
+  const { access_token, user_id, name } = req.body;
 
   if (!access_token || !user_id || !name) {
     return res.status(400).json({ 
@@ -124,8 +124,8 @@ router.post('/create-playlist', async (req, res) => {
       `https://api.spotify.com/v1/users/${user_id}/playlists`,
       {
         name: name,
-        description: description || '',
-        public: isPublic !== false // Defaults to true if not specified
+        description: "create via spotireco",
+        public: true // Defaults to true if not specified
       },
       {
         headers: {
