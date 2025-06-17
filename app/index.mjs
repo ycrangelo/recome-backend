@@ -11,6 +11,9 @@ import spotifyRoute from './routes/spotifyRoute.mjs'
 
 dotenv.config();
 const app = express();
+// Add these middleware
+app.use(bodyParser.json()); // For parsing application/json
+app.use(bodyParser.urlencoded({ extended: true })); // For parsing form data
 
 // CORS configuration
 app.use(cors({
