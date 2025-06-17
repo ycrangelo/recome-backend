@@ -101,4 +101,48 @@ router.get('/refresh_token', async (req, res) => {
   }
 });
 
+
+// Create Playlist Route
+//
+router.post('/create-playlist', async (req, res) => {
+  const { access_token, user_id, name, description, isPublic } = req.body;
+
+  if (!access_token || !user_id || !name) {
+    return res.status(400).json({ 
+      error: 'Missing required parameters: access_token, user_id, and name are required' 
+    });
+  }
+
+  try {
+    // Create the playlist
+    const response = await axios.post(
+      `https://api.spotify.com/v1/users/${user_id}/playlists`,
+      {
+        name: name,
+        description: description || '',
+        public: isPublic !== false // Defaults to true if not specified
+      },
+      {
+        headers: {
+          'Authorization': `Bearer ${access_token}`,
+          'Content-Type': 'application/json'
+        }
+      }
+    );
+
+    res.json({
+      success: true,
+      playlist: response.data
+    });
+
+  } catch (error) {
+    console.error('Error creating playlist:', error.response?.data || error.message);
+    res.status(error.response?.status || 500).json({
+      error: 'Failed to create playlist',
+      details: error.response?.data || error.message
+    });
+  }
+});
+
+
 export default router;
