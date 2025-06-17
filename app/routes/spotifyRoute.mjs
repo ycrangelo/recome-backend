@@ -114,18 +114,17 @@ router.post('/create-playlist', async (req, res) => {
 
   if (!access_token || !user_id || !name) {
     return res.status(400).json({ 
-      error: 'Missing required parameters: access_token, user_id, and name are required' 
+      error: 'Missing required parameters' 
     });
   }
 
   try {
-    // Create the playlist
     const response = await axios.post(
       `https://api.spotify.com/v1/users/${user_id}/playlists`,
       {
         name: name,
         description: "create via spotireco",
-        public: true // Defaults to true if not specified
+        public: true
       },
       {
         headers: {
@@ -135,13 +134,21 @@ router.post('/create-playlist', async (req, res) => {
       }
     );
 
+    // Extract playlist ID from response
+    const playlistId = response.data.id; // ← HERE'S THE ID
+    const spotifyUrl = `https://open.spotify.com/playlist/${playlistId}`;
+
     res.json({
       success: true,
-      playlist: response.data
+      playlist: {
+        ...response.data, // Include all original data
+        spotify_url: spotifyUrl, // Add clickable URL
+        id: playlistId // Explicitly show the ID
+      }
     });
 
   } catch (error) {
-    console.error('Error creating playlist:', error.response?.data || error.message);
+    console.error('Error:', error.response?.data || error.message);
     res.status(error.response?.status || 500).json({
       error: 'Failed to create playlist',
       details: error.response?.data || error.message
