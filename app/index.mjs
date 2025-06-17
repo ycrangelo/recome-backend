@@ -100,7 +100,7 @@ app.get('/get-presigned-url', async (req, res) => {
 //   }
 // });
 
-app.use('/', spotifyRoute);
+app.use('/api/spotify', spotifyRoute);
 
 // Start server
 const PORT = 3000;
