@@ -18,7 +18,12 @@ const {
 
 // 1. Redirect to Spotify Login Page
 router.get('/login', (req, res) => {
-  const scope = 'user-read-private user-read-email'; // Add required scopes
+  const scope = [
+    'user-read-private',
+    'user-read-email',
+    'playlist-modify-public',  // ← Add these
+    'playlist-modify-private'  // ← two scopes
+  ].join(' ');
   const queryParams = querystring.stringify({
     client_id: SPOTIFY_CLIENT_ID,
     response_type: 'code',
